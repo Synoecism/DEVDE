@@ -1,0 +1,19 @@
+{
+  "name": "devde",
+  "version": "1.0.0",
+  "description": "Reservation system for events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarlWestgardh/DEVDE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KarlWestgardh/DEVDE/issues"
+  },
+  "homepage": "https://github.com/KarlWestgardh/DEVDE#readme"
+}
