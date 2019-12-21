@@ -6,6 +6,9 @@
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item v-if="activeUser" to="/productions">Productions</b-nav-item>
+          <b-nav-item v-if="activeUser" to="/reservations">Reservations</b-nav-item>
+          <b-nav-item v-if="activeUser" to="/holds">Holds</b-nav-item>
+          <b-nav-item v-if="activeUser" to="/settings">Settings</b-nav-item>
           <b-nav-item href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
           <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
         </b-navbar-nav>

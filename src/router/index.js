@@ -2,13 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Productions from '@/components/Productions'
+import Reservations from '@/components/Reservations'
+import Holds from '@/components/Holds'
+import Settings from '@/components/Settings'
 import Auth from '@okta/okta-vue'
-//import {application_keys} from '../application-keys.js'
+import application_keys from '../application-keys'
 
 Vue.use(Auth, {
-  //issuer: `https://${application_keys.okta_domain}/oauth2/default`,
-  issuer: 'https://dev-125361.okta.com/oauth2/default',
-  client_id: '0oa2atzibaBF77WfY357',
+  issuer: `${application_keys.okta_domain}/oauth2/default`,
+  client_id: application_keys.client_id,
   redirect_uri: 'http://localhost:8080/implicit/callback',
   scope: 'openid profile email'
 })
@@ -36,6 +38,33 @@ let router = new Router({
         //Needs to be logged in to be accessible
         requiresAuth: true
       }
+    },
+    {
+        path: '/reservations',
+        name: 'Reservations',
+        component: Reservations,
+        meta: {
+          //Needs to be logged in to be accessible
+          requiresAuth: true
+        }
+    },
+    {
+        path: '/holds',
+        name: 'Holds',
+        component: Holds,
+        meta: {
+          //Needs to be logged in to be accessible
+          requiresAuth: true
+        }
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
+        meta: {
+          //Needs to be logged in to be accessible
+          requiresAuth: true
+        }
     }
   ]
 })
