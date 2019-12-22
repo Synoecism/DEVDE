@@ -7,7 +7,6 @@ const mongo = require('mongodb')
 const MongoClient = mongo.MongoClient
 const uri = application_keys.getKeys.connection_string
 const db_name = application_keys.getKeys.database_name
-
 var client;
 
 oktaJwtVerifier = new oktaJwtVerifier({
