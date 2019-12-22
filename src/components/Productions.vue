@@ -17,6 +17,7 @@
 </template>
 <script>
 import api from '../services/api.js'
+
 export default {
   data(){
     return {
@@ -24,16 +25,10 @@ export default {
     }
   },
   async created () {
-    /* eslint-disable */
-    console.log('in created')
-    console.log(this.$auth.getUser())
     this.refreshProductions()
   },
   methods : {
     async refreshProductions(){
-          /* eslint-disable */
-
-      console.log('in refreshproductions')
       this.productions = await api.getProductions()
     }
   }

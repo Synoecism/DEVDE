@@ -1,22 +1,8 @@
 <template>
-  <div class="hero">
+  <div id="hero">
     <div>
       <h1 class="display-3">DEVDE</h1>
-      <p class="lead">Hotel Reservation System</p>
+      <p id="lead">Hotel Reservation System</p>
     </div>
   </div>
 </template>
-
-<style>
-  .hero {
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .hero .lead {
-    font-weight: 200;
-    font-size: 1.5rem;
-  }
-</style>

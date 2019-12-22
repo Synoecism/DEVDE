@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar id="lead" toggleable="md" type="dark" variant="dark">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-navbar-brand to="/">DEVDE</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
@@ -11,6 +11,7 @@
           <b-nav-item v-if="activeUser" to="/settings">Settings</b-nav-item>
           <b-nav-item href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
           <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
+          <b-nav-item v-if="activeUser">Logged in as: {{activeUser.given_name}}</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -20,7 +21,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'app',
   data () {
@@ -50,3 +50,7 @@ export default {
   }
 }
 </script>
+
+<style>
+  @import './assets/style.css'
+</style>
