@@ -9,8 +9,8 @@ import Auth from '@okta/okta-vue'
 import application_keys from '../application-keys'
 
 Vue.use(Auth, {
-  issuer: `${application_keys.okta_domain}/oauth2/default`,
-  client_id: application_keys.client_id,
+  issuer: `${application_keys.getKeys.okta_domain}/oauth2/default`,
+  client_id: application_keys.getKeys.client_id,
   redirect_uri: 'http://localhost:8080/implicit/callback',
   scope: 'openid profile email'
 })
