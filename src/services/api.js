@@ -30,5 +30,10 @@ export default {
     },
     getReservations(){
         return this.execute('get','/reservations')
+    },
+    sendMail(subject,text){
+        /* eslint-disable */
+        console.log(subject,text)
+        return this.execute('post','/sendMail')
     }
 }

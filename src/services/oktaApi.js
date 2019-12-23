@@ -25,24 +25,11 @@ export default {
 
     //HERE ARE THE CALLS FROM CLIENT TO SERVER
     getAllOktaUsers(){
-        return this.execute('get','/api/v1/users')
-    },
-    testOktaCall(){
-        var baseUrl = application_keys.getKeys.okta_domain;
-        var xhr = new XMLHttpRequest();
-            if ("withCredentials" in xhr) {
-             xhr.onerror = function() {
-                alert('Invalid URL or Cross-Origin Request Blocked.  You must explicitly add this site (' + window.location.origin + ') to the list of allowed websites in the administrator UI');
-            }
-            xhr.onload = function() {
-                alert(this.responseText);
-            };
-            xhr.open('GET', baseUrl + '/api/v1/users/me', true);
-            xhr.withCredentials = true;
-            xhr.send();
-        } else {
-            alert("CORS is not supported for this browser!")
-        }
+        // this works
+        return this.execute('get','/api/v1/users/me')
+
+        // this doesnt work
+        //return this.execute('get','/api/v1/users')
     }
 }
 
