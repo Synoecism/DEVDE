@@ -4,11 +4,9 @@
   "description": "Reservation system for events",
   "main": "./src/main.js",
   "scripts": {
+    "server": "node src/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "vue-cli-service serve",
-    "server": "./node_modules/nodemon/bin/nodemon.js src/server/index.js",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "client": "vue-cli-service serve"
   },
   "dependencies": {
     "@okta/jwt-verifier": "^1.0.0",
@@ -18,12 +16,16 @@
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.3",
     "cors": "^2.8.5",
+    "dns": "^0.2.2",
     "express": "^4.17.1",
     "mongodb": "^3.4.1",
+    "nodemailer": "^6.4.2",
     "nodemon": "^2.0.2",
     "sequelize": "^5.21.3",
     "sqlite": "^3.0.3",
-    "vue": "^2.6.10"
+    "vue": "^2.6.11",
+    "vue-cli": "^2.9.6",
+    "vue-table-dynamic": "0.0.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

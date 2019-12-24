@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 var oktaJwtVerifier = require('@okta/jwt-verifier')
+var mailService = require('./mailService.js')
 const application_keys = require('../application-keys')
 const mongo = require('mongodb')
 const MongoClient = mongo.MongoClient
@@ -74,5 +75,8 @@ app.get('/productions',(req,res)=>{
     ])
 })
 
+app.post('/sendMail',(req,res)=>{
+    mailService.sendMail('abc','123')
+})
 //PRINT SOME STUFF REGARDING SETTING UP THE SERVER SIDE 
 app.listen(application_keys.getKeys.port)

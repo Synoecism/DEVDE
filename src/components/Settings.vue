@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid mt-4">
     <h1 class="h1">Settings</h1>
-    <p>bla bla</p>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -27,7 +26,7 @@ export default {
     }
   },
   async created () {
-    await oktaApi.testOktaCall()
+    this.refreshOktaUsers()
   },
   methods : {
     async refreshOktaUsers(){

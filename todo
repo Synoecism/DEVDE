@@ -1,3 +1,13 @@
-[] add prints for 
-[] connect to mongodb
-[] setup of mongodb database
+[x] connect to mongodb
+[] connect to okta to received all users
+[x] setup of mongodb database
+[] pdf creator
+[] mail handling
+[] user types (owner, default, accounting)
+[] one time link for hotel
+[] tables for reservation
+[] tables for productions
+[] tables for users
+[] tables for reservation
+[] seperate api calls from server index.js
+[] fix so that there is confirmation that server is up-and-running
