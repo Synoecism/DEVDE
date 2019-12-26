@@ -3,7 +3,6 @@
     <h1 class="h1">Productions</h1>
 
     <!-- Add new production -->
-
     <b-button variant="primary" v-on:click="addProduction()">Add new production</b-button>
 
       <!--- Filtering for the table --->
@@ -29,19 +28,25 @@
       :filter="filter"
       :items="items"
     >
+
       <!-- Button per each row. cell(column_header) -->
-      <template v-slot:cell(edit)="{ value }">
-        <b-button variant="warning" v-on:click="editProduction(index)">Edit</b-button>
+      <template v-slot:cell(select)="row">
+        <b-button v-on:click="selectProduction(row.index)">Select</b-button>
       </template>
 
       <!-- Button per each row. cell(column_header) -->
-      <template v-slot:cell(archive)="{ value }">
-        <b-button variant="info" v-on:click="archiveProduction(index)">Archive</b-button>
+      <template v-slot:cell(edit)="row">
+        <b-button variant="warning" v-on:click="editProduction(row.index)">Edit</b-button>
+      </template>
+
+      <!-- Button per each row. cell(column_header) -->
+      <template v-slot:cell(archive)="row">
+        <b-button variant="info" v-on:click="archiveProduction(row.index)">Archive</b-button>
       </template>
     
     </b-table>
     <!-- Table ending -->
-
+    
   </div>
 </template>
 <script>
@@ -50,16 +55,20 @@ import api from '../services/api.js'
 export default {
   data(){
     return {
-      productions : [],
+      items: [
+          { name:'Way out West 2019',start_date:"2019-01-01",end_date:"2019-02-01"},
+          { name:'Way out West 2018',start_date:"2019-01-01",end_date:"2019-02-01"},
+          { name:'Way out West 2017',start_date:"2019-01-01",end_date:"2019-02-01"},
+          { name:'Way out West 2016',start_date:"2019-01-01",end_date:"2019-02-01"},
+          { name:'Way out West 2015',start_date:"2019-01-01",end_date:"2019-02-01"}
+      ],
       fields: [
+      'select',
       'name', 
       'start_date', 
       'end_date',
       'edit',
       'archive'],
-      items: [
-          { name:'Way out West 2019',start_date:"2019-01-01",end_date:"2019-02-01"}
-        ],
       filter: null      
       }
   },
@@ -70,6 +79,11 @@ export default {
     async refreshProductions(){
       this.productions = await api.getProductions()
     },
+    async selectProduction(index) {
+      /* eslint-disable */
+      await this.$store.commit('changeProduction',this.items[index])
+      await this.$router.push('/reservations')
+    },
     addProduction() {
         window.alert('adding production')
     },
@@ -77,7 +91,7 @@ export default {
         window.alert('editing production'+index)
     },
     archiveProduction(index) {
-        window.alert('archiiving production'+index)
+        window.alert('archiving production'+index)
     }
   }
 }

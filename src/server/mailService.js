@@ -11,7 +11,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
     from: application_keys.getKeys.mail_adress, // sender address
-    to: 'karl.westgardh@gmail.com', // list of receivers
+    to: 'test@test.com', // list of receivers
     subject: '', // Subject line
     html: ``// plain text body
 };

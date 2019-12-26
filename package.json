@@ -25,7 +25,8 @@
     "sqlite": "^3.0.3",
     "vue": "^2.6.11",
     "vue-cli": "^2.9.6",
-    "vue-table-dynamic": "0.0.7"
+    "vue-table-dynamic": "0.0.7",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
