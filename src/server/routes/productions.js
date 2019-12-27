@@ -7,9 +7,6 @@ const Production = require('../models/Production')
 // Access: Private
 
 router.post('/',async (req,res)=>{
-
-    console.log(JSON.stringify(req.headers));
-
     try {
         // get all values from request
         const { title, start_date, end_date } = req.body;
@@ -27,7 +24,7 @@ router.post('/',async (req,res)=>{
             title: title,
             start_date: start_date,
             end_date: end_date,
-            log : [`Created: ${Date.now}`]
+            log : [`CREATED: @ ${new Date().toISOString()} by ${req.user.email}`]
         })
 
         // save production to database
