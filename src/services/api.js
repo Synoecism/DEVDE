@@ -24,7 +24,7 @@ export default {
         })
     },
 
-    //HERE ARE THE CALLS FROM CLIENT TO SERVER
+    //Calls from client to server below:
     getProductions(){
         return this.execute('get','/productions')
     },

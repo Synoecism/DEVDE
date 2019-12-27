@@ -28,6 +28,17 @@
       :filter="filter"
       :items="items"
     >
+      <template v-slot:cell(start_date)="row">
+        {{row.value | moment("YYYY MM DD")}}
+          <br/>
+        {{row.value | moment("dddd")}}
+      </template>
+
+      <template v-slot:cell(end_date)="row">
+        {{row.value | moment("YYYY MM DD")}}
+          <br/>
+        {{row.value | moment("dddd")}}
+      </template>
 
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(select)="row">
@@ -55,16 +66,10 @@ import api from '../services/api.js'
 export default {
   data(){
     return {
-      items: [
-          { name:'Way out West 2019',start_date:"2019-01-01",end_date:"2019-02-01"},
-          { name:'Way out West 2018',start_date:"2019-01-01",end_date:"2019-02-01"},
-          { name:'Way out West 2017',start_date:"2019-01-01",end_date:"2019-02-01"},
-          { name:'Way out West 2016',start_date:"2019-01-01",end_date:"2019-02-01"},
-          { name:'Way out West 2015',start_date:"2019-01-01",end_date:"2019-02-01"}
-      ],
+      items: [],
       fields: [
       'select',
-      'name', 
+      'title', 
       'start_date', 
       'end_date',
       'edit',
@@ -77,7 +82,7 @@ export default {
   },
   methods : {
     async refreshProductions(){
-      this.productions = await api.getProductions()
+      this.items = await api.getProductions()
     },
     async selectProduction(index) {
       /* eslint-disable */

@@ -2,81 +2,54 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 var oktaJwtVerifier = require('@okta/jwt-verifier')
-var mailService = require('./mailService.js')
 const application_keys = require('../application-keys')
-const mongo = require('mongodb')
-const MongoClient = mongo.MongoClient
+var mongoose = require('mongoose')
 const uri = application_keys.getKeys.connection_string
 const db_name = application_keys.getKeys.database_name
-var client;
 
+var productionsController = require('./routes/productions')
+
+//Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
     issuer: `${application_keys.getKeys.okta_domain}/oauth2/default`,
     client_id: application_keys.getKeys.client_id
 })
 
+//Setup of express server
 let app = express()
+
+//Enable cross-origin resource sharing
 app.use(cors())
+
+//Enable parsing of JSON
 app.use(bodyParser.json())
 
-// verify JWT token middleware
-app.use((req, res, next) =>{
-    //require every request to have an authorization header
-    if(!req.headers.authorization){
-        return next(new Error('Authorization header is required'))
-    }
+//Connect to MongoDB Atlas Cloud Server
+mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology:true});
 
-    let parts = req.headers.authorization.trim().split(' ')
-    let accessToken = parts.pop()
-
-    //api:default is the expected audience
-    oktaJwtVerifier.verifyAccessToken(accessToken,'api://default')
-        .then(jwt => {
-            req.user = {
-                uid: jwt.claims.uid,
-                email: jwt.claims.sub
-            }
-            next()
-        })
-        .catch((e)=>{
-            console.log(e)
-        })
+//Connection handling
+var db = mongoose.connection;
+db.on('error',console.error.bind(console,'- Status: Failed to connect to MongoDB Atlas'))
+db.once('open', function(){
+    console.log('- Status: Succesfully connected to MongoDB Atlas')
 })
 
-var mongoClient = new MongoClient(uri, { 
-    useUnifiedTopology: true})
+//Setup of production routes
+app.use('/productions',productionsController)
 
-mongoClient.connect((err,db) => {
-    //returns db connection
-    if(err != null){
-        console.log(err)
-        return
-    }
-    client = db
+//Setup of server error handler
+app.use(function(err, req, res, next){
+    console.log(err.stack)
+    var err_res = {
+        message: err.message,
+    };
+    res.status(err.status || 500);
+    res.json(err_res)
 })
 
-app.get('/reservations', (req,res)=> {
-    const collection = client.db(db_name).collection("Reservations")
-    collection.find().toArray(function (err, results){
-        if (err) {
-            console.log(err)
-            res.send([])
-            return
-        }
-        res.send(results)
-    })
+//Setup of backend server
+app.listen(application_keys.getKeys.port, function(err){
+    if (err) throw err;
+    console.log(`Server running at:`)
+    console.log(`- Backend: http://localhost:${application_keys.getKeys.port}`)
 })
-
-// IMPORT STUFF FROM ANOTHER FILE FOR HANDLING SERVER REQUEST TO DATABASE
-app.get('/productions',(req,res)=>{
-    res.send([
-        'Production1',
-        'Production2'
-    ])
-})
-
-app.post('/sendMail',(req,res)=>{
-    mailService.sendMail('abc','123')
-})
-//PRINT SOME STUFF REGARDING SETTING UP THE SERVER SIDE 
-app.listen(application_keys.getKeys.port)

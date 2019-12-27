@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuex from 'vuex'
 
+Vue.use(require('vue-moment'));
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
