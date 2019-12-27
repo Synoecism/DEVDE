@@ -7,6 +7,9 @@ const Production = require('../models/Production')
 // Access: Private
 
 router.post('/',async (req,res)=>{
+
+    console.log(JSON.stringify(req.headers));
+
     try {
         // get all values from request
         const { title, start_date, end_date } = req.body;
@@ -16,14 +19,15 @@ router.post('/',async (req,res)=>{
 
         if(check){
             //if production already exists, return
-            return res.status(400).json({msg:'This production already exists'});
+            return res.status(200).json({status:false,msg:'This production already exists'});
         }
 
         // create new production
         production = new Production({
             title: title,
             start_date: start_date,
-            end_date: end_date
+            end_date: end_date,
+            log : [`Created: ${Date.now}`]
         })
 
         // save production to database

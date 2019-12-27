@@ -11,4 +11,7 @@
 [] tables for reservation
 [x] seperate api calls from server index.js
 [x] fix so that there is confirmation that server is up-and-running
-[] fix so that whenever server code changes, the server is reloaded like the client 
+[] fix so that whenever server code changes/isSaved, the server is reloaded like the client 
+[] use spinners to indicate loading on page wherever is needed
+[] handle errors such as loosing connection to internet for client (toasts)
+[] conditionally affect application depeneding on user ype

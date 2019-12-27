@@ -12,7 +12,8 @@ const ProductionSchema = new mongoose.Schema({
     end_date : {
         type: Date,
         required: true
-    }
+    },
+    log: [String]
 
     //Continue here with all the stuff
 })

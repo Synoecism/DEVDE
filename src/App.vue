@@ -6,7 +6,7 @@
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item v-if="activeUser && !activeProduction" to="/productions">Productions</b-nav-item>
-          <b-nav-item v-if="activeUser && activeProduction" >{{activeProduction.name}}</b-nav-item>
+          <b-nav-item v-if="activeUser && activeProduction" >{{activeProduction.title}}</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" to="/reservations">Reservations</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" to="/holds">Holds</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" to="/settings">Settings</b-nav-item>
@@ -32,7 +32,7 @@ export default {
       activeProduction: null
     }
   },
-  async mounted () {
+  async created () {
     await this.updateApp()
   },
   watch : {

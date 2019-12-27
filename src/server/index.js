@@ -5,7 +5,6 @@ var oktaJwtVerifier = require('@okta/jwt-verifier')
 const application_keys = require('../application-keys')
 var mongoose = require('mongoose')
 const uri = application_keys.getKeys.connection_string
-const db_name = application_keys.getKeys.database_name
 
 var productionsController = require('./routes/productions')
 
@@ -33,6 +32,26 @@ db.on('error',console.error.bind(console,'- Status: Failed to connect to MongoDB
 db.once('open', function(){
     console.log('- Status: Succesfully connected to MongoDB Atlas')
 })
+
+// verify JWT token middleware
+app.use((req, res, next) => {
+    // require every request to have an authorization header
+    if (!req.headers.authorization) {
+      return next(new Error('Authorization header is required'))
+    }
+    let parts = req.headers.authorization.trim().split(' ')
+    let accessToken = parts.pop()
+    oktaJwtVerifier.verifyAccessToken(accessToken,'api://default')
+      .then(jwt => {
+          //add user info to all request
+        req.user = {
+          uid: jwt.claims.uid,
+          email: jwt.claims.sub
+        }
+        next()
+      })
+      .catch(next) // jwt did not verify!
+  })
 
 //Setup of production routes
 app.use('/productions',productionsController)

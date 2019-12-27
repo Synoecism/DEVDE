@@ -24,13 +24,18 @@ export default {
         })
     },
 
-    //Calls from client to server below:
+    //Calls from client to server
     getProductions(){
         return this.execute('get','/productions')
+    },
+    addProduction(payload){
+        return this.execute('post','/productions',payload)
     },
     getReservations(){
         return this.execute('get','/reservations')
     },
+
+    //change later
     sendMail(subject,text){
         /* eslint-disable */
         console.log(subject,text)
