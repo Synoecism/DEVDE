@@ -13,9 +13,36 @@ const ProductionSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    log: [String]
-
-    //Continue here with all the stuff
+    users: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+    }
+    ],
+    holds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'hold'
+        }
+    ],
+    reservations: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'reservation'
+        }
+    ],
+    settings: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'setting'
+    },
+    log: {
+        type: [String],
+        required: true
+    },
+    isArchived: {
+        type: Boolean,
+        default: false
+    }
 })
 
 module.exports = Production = mongoose.model('production',ProductionSchema)

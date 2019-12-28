@@ -13,47 +13,60 @@
       title="Add new production"
     >
       <!--- Form in modal --->
-      <b-form>
-        <b-form-group
-          id="input-group-1"
-          label="Title of production:"
-          label-for="input-1"
-          description="Example: Way out West 2018"
-        >
-          <b-form-input
-            id="input-1"
-            v-model="formResult.title"
-            type="text"
-            required
-            placeholder="Enter title of production"
-          ></b-form-input>
-        </b-form-group>
+      <ValidationObserver v-slot="{ invalid }">
+        <b-form @submit.prevent="onSubmit">
+          <b-form-group
+            id="input-group-1"
+            label="Title of production:"
+            label-for="input-2"
+          >
+            <ValidationProvider rules="required" v-slot="{ errors }">
+              <b-form-input
+                id="input-1"
+                name="title_input"
+                v-model="formResult.title"
+                placeholder="Enter title of production"
+              ></b-form-input>
+              <span>{{ errors[0] }}</span>
+            </ValidationProvider>
+          </b-form-group>
 
-        <b-form-group
-          id="input-group-2"
-          label="Start date:"
-          label-for="input-2"
-        >
-          <b-form-input
-            id="input-2"
-            v-model="formResult.start_date"
-            type="date"
-            required
-          ></b-form-input>
-        </b-form-group>
+          <b-form-group
+            id="input-group-2"
+            label="Start date:"
+            label-for="input-2"
+          >
+            <validation-provider rules="required" v-slot="{ errors }">
+              <b-form-input
+                id="input-2"
+                name="start_date_input"
+                v-model="formResult.start_date"
+                type="date"
+              ></b-form-input>
+              <span>{{ errors[0] }}</span>
+            </validation-provider>
+          </b-form-group>
 
-        <b-form-group id="input-group-3" label="End date:" label-for="input-3">
-          <b-form-input
-            id="input-3"
-            v-model="formResult.end_date"
-            type="date"
-            required
-          ></b-form-input>
-        </b-form-group>
+          <b-form-group
+            id="input-group-3"
+            label="End date:"
+            label-for="input-3"
+          >
+            <validation-provider rules="required" v-slot="{ errors }">
+              <b-form-input
+                id="input-3"
+                v-model="formResult.end_date"
+                type="date"
+              ></b-form-input>
+              <span>{{ errors[0] }}</span>
+            </validation-provider>
+          </b-form-group>
 
-        <!-- remove submit type to prevent redirection --> 
-        <b-button v-on:click="addProduction(),hideModal()" variant="primary">Submit</b-button>
-      </b-form>
+          <b-button type="submit" :disabled="invalid" variant="primary"
+            >Submit</b-button
+          >
+        </b-form>
+      </ValidationObserver>
       <!--- End of form in modal --->
     </b-modal>
 
@@ -126,7 +139,7 @@ export default {
       filter: null
     };
   },
-  async created() {
+  beforeMount() {
     this.refreshProductions();
   },
   methods: {
@@ -138,13 +151,13 @@ export default {
       await this.$router.push("/reservations");
     },
     async addProduction() {
-      var response = await api.addProduction(this.formResult)
+      var response = await api.addProduction(this.formResult);
 
-      if(response.status === false){
-        this.makeToast('danger','Error','Production already exists!')
+      if (response.status === false) {
+        this.makeToast("danger", "Error", "Production already exists!");
       } else {
-        this.makeToast('success','Success!','Succesfully created production')      
-        this.refreshProductions()
+        this.makeToast("success", "Success!", "Succesfully created production");
+        this.refreshProductions();
       }
       this.resetForm();
     },
@@ -160,15 +173,19 @@ export default {
     hideModal() {
       this.$refs["my-modal"].hide();
     },
-    resetForm(){
-      this.formResult = {}
+    resetForm() {
+      this.formResult = {};
     },
-    makeToast(variant = null,title,content){
-      this.$bvToast.toast(content,{
+    makeToast(variant = null, title, content) {
+      this.$bvToast.toast(content, {
         title: title,
         variant: variant,
         solid: true
-      })
+      });
+    },
+    onSubmit() {
+      this.addProduction();
+      this.hideModal();
     }
   }
 };

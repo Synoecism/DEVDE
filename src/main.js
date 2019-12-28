@@ -7,8 +7,27 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuex from 'vuex'
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+import VueMoment from 'vue-moment'
 
+// Register it globally
 Vue.use(require('vue-moment'));
+
+// Add a rule.
+extend(
+  'required', {...required, message:'This field is required'},
+  'email',{...email},
+  'date_before',{
+    validate(value,{date}){
+      return VueMoment(value).isAfter(date);
+    },
+    params: ['date']
+  }
+);
+
+
+
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
@@ -43,3 +62,8 @@ new Vue({
   store,
   render(h) { return h(App) }
 })
+
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+
