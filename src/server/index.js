@@ -23,8 +23,12 @@ app.use(cors())
 //Enable parsing of JSON
 app.use(bodyParser.json())
 
-//Connect to MongoDB Atlas Cloud Server
-mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology:true});
+/* Connect to MongoDB Atlas Cloud Server
+@ useNewUrlParser : required to be able to parse connection strings
+@ useUnifiedTopology : required for mongoose to be able to monitor server
+@ useFindAndModify : required to be able to use methods update methods such as findByIdAndUpdate
+*/
+mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology:true, useFindAndModify: false});
 
 //Connection handling
 var db = mongoose.connection;

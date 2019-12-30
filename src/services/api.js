@@ -31,10 +31,9 @@ export default {
     addProduction(payload){
         return this.execute('post','/productions',payload)
     },
-    getReservations(){
-        return this.execute('get','/reservations')
+    changeProduction(id,payload){
+        return this.execute('put',`/productions/${id}`,payload)
     },
-
     //change later
     sendMail(subject,text){
         /* eslint-disable */

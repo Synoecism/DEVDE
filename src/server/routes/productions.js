@@ -26,7 +26,6 @@ router.post('/',async (req,res)=>{
             //if user doesnt exist in app_db, create an admin user 
             user = new User({
                 okta_id: req.user.uid,
-                type: 'Admin',
                 log : [`CREATED: @ ${new Date().toISOString()} by ${req.user.email}`]
             })
 
@@ -39,7 +38,9 @@ router.post('/',async (req,res)=>{
             title: title,
             start_date: start_date,
             end_date: end_date,
-            users: [user],
+
+            //add current user to the array of admins
+            users: {admins:[user]},
             log : [`CREATED: @ ${new Date().toISOString()} by ${req.user.email}`]
         })
 
@@ -63,9 +64,23 @@ router.post('/',async (req,res)=>{
 router.put('/:id',async(req,res)=>{
     
     try {
-        
-        // code here 
+        //find the previous data of the document by the id
+        let previousData = await Production.findById(req.params.id);
 
+        //get the changes as an array of all the property changes
+        let changes = getChanges(req.body,previousData)
+
+        // do something with the the changes to get in into the change log
+
+        //find the document by id, inserts changes by req.body and returns the newly updated document from the db
+        let production = await Production.findByIdAndUpdate(req.params.id,req.body,{new:true});
+
+        if(!production){
+            //if production doesn't exists, return
+            return res.status(400).json({status:false,msg:'Production does not exist'});
+        }
+
+        return res.status(200).json(production)
     } catch (error) {
         console.error(error.message)
         res.status(500).send('Server Error')
@@ -82,7 +97,7 @@ router.get('/',async(req,res)=>{
         const user = await User.findOne({okta_id:req.user.uid})
 
         //find productions that the user have access to by mongoose id
-        const productions = await Production.find({users:user._id})
+        const productions = await Production.find({$or:[{'users.admins':[user]},{'users.accounting':[user]},{'users.basics':[user]}]})
         return res.status(200).json(productions)
 
     } catch (error) {
@@ -105,6 +120,22 @@ router.get('/:id',async(req,res)=>{
         res.status(500).send('Server Error')
     }
 })
+
+function getChanges(newData,previousData){
+
+    //localize previousData to json object
+    var previousData = previousData.toJSON()
+    var changes = []
+
+    //loop over the property to see what has been changed
+    for(var prop in newData){
+        if(previousData.hasOwnProperty(prop)){
+            changes.push({property: prop, new : newData[prop],previous: previousData[prop]})
+        }
+    }
+
+    return changes;
+}
 
 
 

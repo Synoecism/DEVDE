@@ -13,12 +13,26 @@ const ProductionSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    users: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user'
-    }
-    ],
+    users: {
+        admins : [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user' 
+            },
+        ],
+        accounting : [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user' 
+            },
+        ],
+        basics : [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user' 
+            },
+        ]
+    },
     holds: [
         {
             type: mongoose.Schema.Types.ObjectId,
