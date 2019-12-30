@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongooseHistory = require('mongoose-history')
 
 const ProductionSchema = new mongoose.Schema({
     title : {
@@ -59,4 +60,6 @@ const ProductionSchema = new mongoose.Schema({
     }
 })
 
-module.exports = Production = mongoose.model('production',ProductionSchema)
+ProductionSchema.plugin(mongooseHistory);
+
+module.exports = Production = mongoose.model('Production',ProductionSchema)

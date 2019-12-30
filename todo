@@ -21,3 +21,5 @@
 [] add validation on client side, cannot add production that has a end_date < start_date
 [] checjk possibility for when a change is made to the database, automatically refresh for all users? 
 [] add validation on client side, null values should not be allowed as inputs (currently you can enter a value as input, then remove, then push to db)
+[] update mongoose history plugin with data for which user that has performed the changes (https://www.npmjs.com/package/mongoose-history)
+[] add object_id to mongoose history plugin 

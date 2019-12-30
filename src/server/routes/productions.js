@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Production = require('../models/Production')
 const User = require('../models/User')
-
+const diffHistory = require('mongoose-diff-history/diffHistory');
+ 
 // Route: Post
 // Description: Create production
 // Access: Private
@@ -40,8 +41,7 @@ router.post('/',async (req,res)=>{
             end_date: end_date,
 
             //add current user to the array of admins
-            users: {admins:[user]},
-            log : [`CREATED: @ ${new Date().toISOString()} by ${req.user.email}`]
+            users: {admins:[user]}
         })
 
         // save production to database
@@ -64,15 +64,7 @@ router.post('/',async (req,res)=>{
 router.put('/:id',async(req,res)=>{
     
     try {
-        //find the previous data of the document by the id
-        let previousData = await Production.findById(req.params.id);
-
-        //get the changes as an array of all the property changes
-        let changes = getChanges(req.body,previousData)
-
-        // do something with the the changes to get in into the change log
-
-        //find the document by id, inserts changes by req.body and returns the newly updated document from the db
+            //find the document by id, inserts changes by req.body and returns the newly updated document from the db
         let production = await Production.findByIdAndUpdate(req.params.id,req.body,{new:true});
 
         if(!production){
@@ -120,23 +112,6 @@ router.get('/:id',async(req,res)=>{
         res.status(500).send('Server Error')
     }
 })
-
-function getChanges(newData,previousData){
-
-    //localize previousData to json object
-    var previousData = previousData.toJSON()
-    var changes = []
-
-    //loop over the property to see what has been changed
-    for(var prop in newData){
-        if(previousData.hasOwnProperty(prop)){
-            changes.push({property: prop, new : newData[prop],previous: previousData[prop]})
-        }
-    }
-
-    return changes;
-}
-
 
 
 module.exports = router;

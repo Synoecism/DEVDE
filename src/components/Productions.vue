@@ -63,7 +63,7 @@
           </b-form-group>
 
           <b-button type="submit" :disabled="invalid" variant="primary"
-            >Change</b-button
+            >Submit</b-button
           >
         </b-form>
       </ValidationObserver>
@@ -134,7 +134,7 @@
           </b-form-group>
 
           <b-button type="submit" :disabled="pristine" variant="primary"
-            >Submit</b-button
+            >Change</b-button
           >
         </b-form>
       </ValidationObserver>
