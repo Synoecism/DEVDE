@@ -69,7 +69,7 @@
       </ValidationObserver>
       <!--- End of form in modal --->
     </b-modal>
-    <!--- End of modal ---> 
+    <!--- End of modal --->
 
     <!-- Modal
      @ hide-footer: removes default ok/cancel buttons of modal
@@ -156,9 +156,9 @@
       </ValidationObserver>
       <!--- End of form in modal --->
     </b-modal>
-    <!--- End of modal ---> 
+    <!--- End of modal --->
 
-    <!-- Button to Add new production -->
+    <!-- Button to add new production -->
     <b-button variant="primary" v-on:click="showModal('add')"
       >Add new production</b-button
     >
@@ -200,14 +200,18 @@
 
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(edit)="row">
-        <b-button variant="warning" v-on:click="selectProduction(row.index),showModal('edit')"
+        <b-button
+          variant="warning"
+          v-on:click="selectProduction(row.index), showModal('edit')"
           >Edit</b-button
         >
       </template>
 
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(archive)="row">
-        <b-button variant="info" v-on:click="selectProduction(row.index),showConfirmModal()"
+        <b-button
+          variant="info"
+          v-on:click="selectProduction(row.index), showConfirmModal()"
           >Archive</b-button
         >
       </template>
@@ -223,10 +227,32 @@ export default {
     return {
       formResult: {},
       items: [],
-      fields: ["select", "title", "start_date", "end_date", "edit", "archive"],
+      fields: [
+        {
+          key: 'select'
+        },
+        {
+          key: 'title',
+          sortable: true
+        },
+        {
+          key: 'start_date',
+          sortable: true
+        },
+        {
+          key: 'end_date',
+          sortable: true
+        },
+        {
+          key: 'edit',
+        },
+        {
+          key: 'archive'
+        }
+      ],
       filter: null,
       selected: {},
-      box : ''
+      box: ""
     };
   },
   created() {
@@ -244,10 +270,9 @@ export default {
       await this.$router.push("/reservations");
     },
     async addProduction() {
-
       //api call to create production
       var response = await api.addProduction(this.formResult);
-      
+
       //notifying user whether or not production was created
       if (response.status === false) {
         this.makeToast("danger", "Error", "Production already exists!");
@@ -259,12 +284,15 @@ export default {
       //Reset & clean form result and selected production before next event
       this.resetForm();
     },
-    selectProduction(index){
-      this.selected = this.items[index]
+    selectProduction(index) {
+      this.selected = this.items[index];
     },
     async editProduction() {
       //api call to change production
-      var response = await api.changeProduction(this.selected._id,this.formResult);
+      var response = await api.changeProduction(
+        this.selected._id,
+        this.formResult
+      );
 
       //notifying user whether or not production was updated
       if (response.status === false) {
@@ -282,16 +310,23 @@ export default {
       this.formResult.isArchived = true;
 
       //set reason for change
-      this.formResult.reason = 'Archiving production'
+      this.formResult.reason = "Archiving production";
 
       //api call to change production
-      var response = await api.changeProduction(this.selected._id,this.formResult);
+      var response = await api.changeProduction(
+        this.selected._id,
+        this.formResult
+      );
 
       //notifying user whether or not production was updated
       if (response.status === false) {
         this.makeToast("danger", "Error", "Production not archived!");
       } else {
-        this.makeToast("success", "Success!", "Succesfully archived production");
+        this.makeToast(
+          "success",
+          "Success!",
+          "Succesfully archived production"
+        );
         this.refreshProductions();
       }
 
@@ -306,7 +341,7 @@ export default {
     },
     resetForm() {
       this.formResult = {};
-      this.selected = {}
+      this.selected = {};
     },
     makeToast(variant = null, title, content) {
       this.$bvToast.toast(content, {
@@ -316,30 +351,36 @@ export default {
       });
     },
     onSubmit(modal) {
-      if(modal === 'add'){
+      if (modal === "add") {
         this.addProduction();
       }
-      if(modal === 'edit'){
+      if (modal === "edit") {
         this.editProduction();
       }
-      
+
       this.hideModal(modal);
     },
-    showConfirmModal(){
+    showConfirmModal() {
       //reset box
-      this.box = ''
-      this.$bvModal.msgBoxConfirm('Are you sure you would like to archive production: '+this.selected.title,{
-        title: 'Please confirm',
-        size: 'lg',
-        okVariant: 'danger',
-        okTitle: 'YES',
-        cancelTitle: 'NO',
-        centered: true
-      }).then(value => {
-        if(value){
-          this.archiveProduction()
-        }
-      })
+      this.box = "";
+      this.$bvModal
+        .msgBoxConfirm(
+          "Are you sure you would like to archive production: " +
+            this.selected.title,
+          {
+            title: "Please confirm",
+            size: "lg",
+            okVariant: "danger",
+            okTitle: "YES",
+            cancelTitle: "NO",
+            centered: true
+          }
+        )
+        .then(value => {
+          if (value) {
+            this.archiveProduction();
+          }
+        });
     }
   }
 };
