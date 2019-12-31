@@ -18,7 +18,7 @@
           <b-form-group
             id="input-group-1"
             label="Title of production:"
-            label-for="input-2"
+            label-for="input-1"
           >
             <ValidationProvider rules="required" v-slot="{ errors }">
               <b-form-input

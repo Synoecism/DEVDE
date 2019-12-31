@@ -26,6 +26,7 @@
     "mongoose-history": "^0.8.0",
     "nodemailer": "^6.4.2",
     "nodemon": "^2.0.2",
+    "request": "^2.88.0",
     "sequelize": "^5.21.3",
     "sqlite": "^3.0.3",
     "v-validate": "^0.1.4",

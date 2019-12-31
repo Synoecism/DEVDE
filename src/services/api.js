@@ -34,6 +34,12 @@ export default {
     changeProduction(id,payload){
         return this.execute('put',`/productions/${id}`,payload)
     },
+    getProduction(id){
+        return this.execute('get',`/productions/${id}`)
+    },
+    getOktaUsers(){
+        return this.execute('get','/oktausers')
+    },
     //change later
     sendMail(subject,text){
         /* eslint-disable */

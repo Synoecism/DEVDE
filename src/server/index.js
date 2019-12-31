@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
 const uri = application_keys.getKeys.connection_string
 
 var productionsController = require('./routes/productions')
+var oktaUsersController = require('./routes/oktausers')
 
 //Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
@@ -29,6 +30,7 @@ app.use(bodyParser.json())
 @ useFindAndModify : required to be able to use methods update methods such as findByIdAndUpdate
 */
 mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology:true, useFindAndModify: false});
+//https://stackoverflow.com/questions/16226472/mongoose-autoreconnect-option
 
 //Connection handling
 var db = mongoose.connection;
@@ -59,6 +61,9 @@ app.use((req, res, next) => {
 
 //Setup of production routes
 app.use('/productions',productionsController)
+
+//Setup of oktausers routes
+app.use('/oktausers',oktaUsersController)
 
 //Setup of server error handler
 app.use(function(err, req, res, next){

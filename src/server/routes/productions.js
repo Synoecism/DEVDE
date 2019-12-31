@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Production = require('../models/Production')
-const User = require('../models/User')
  
 // Route: Post
 // Description: Create production
@@ -19,22 +18,6 @@ router.post('/',async (req,res)=>{
             //if production already exists, return
             return res.status(200).json({status:false,msg:'This production already exists'});
         }
-        // check if user already exists
-        let user = await User.findOne({okta_id: req.user.uid})
-
-        if(!user){
-            //if user doesnt exist in app_db, create an admin user 
-            user = new User({
-                okta_id: req.user.uid,
-                createdAt : {
-                    date : new Date(),
-                    user : `${req.user.email}`
-                }
-            })
-
-            // save user to database
-            await user.save();
-        }
 
         // create new production
         production = new Production({
@@ -43,7 +26,7 @@ router.post('/',async (req,res)=>{
             end_date: end_date,
 
             //add current user to the array of admins
-            users: {admins:[user]},
+            users: {admins:[req.user.uid]},
 
             //log creation (not provided by mongoose-diff-history)
             createdAt : {
@@ -99,11 +82,8 @@ router.put('/:id',async(req,res)=>{
 
 router.get('/',async(req,res)=>{
     try {
-        //fetch the user from the database using the okta auth uid
-        const user = await User.findOne({okta_id:req.user.uid})
-
         //find productions that the user have access to by mongoose id and that is not archived
-        const productions = await Production.find({isArchived:false,$or:[{'users.admins':[user]},{'users.accounting':[user]},{'users.basics':[user]}]})
+        const productions = await Production.find({isArchived:false,$or:[{'users.admins':[req.user.uid]},{'users.accounting':[req.user.uid]},{'users.basics':[req.user.uid]}]})
         return res.status(200).json(productions)
 
     } catch (error) {
