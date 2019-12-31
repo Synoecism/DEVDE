@@ -89,7 +89,7 @@
           <b-form-group
             id="input-group-1"
             label="Title of production:"
-            label-for="input-2"
+            label-for="input-1"
           >
             <ValidationProvider v-slot="{ errors }">
               <b-form-input
@@ -131,6 +131,22 @@
               ></b-form-input>
               <span>{{ errors[0] }}</span>
             </validation-provider>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-4"
+            label="Reason for change:"
+            label-for="input-4"
+          >
+            <ValidationProvider v-slot="{ errors }">
+              <b-form-input
+                id="input-4"
+                name="reason_input"
+                v-model="formResult.reason"
+                placeholder="What's the reason for the changes?"
+              ></b-form-input>
+              <span>{{ errors[0] }}</span>
+            </ValidationProvider>
           </b-form-group>
 
           <b-button type="submit" :disabled="pristine" variant="primary"
@@ -264,6 +280,9 @@ export default {
     async archiveProduction() {
       //add isArchived to formresult
       this.formResult.isArchived = true;
+
+      //set reason for change
+      this.formResult.reason = 'Archiving production'
 
       //api call to change production
       var response = await api.changeProduction(this.selected._id,this.formResult);

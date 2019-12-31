@@ -5,9 +5,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    log: {
-        type: [String],
-        required: true
+    createdAt: {
+        date: String,
+        user: String
     }
 })
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const mongooseHistory = require('mongoose-history')
+const mongooseHistory = require('mongoose-diff-history/diffHistory')
 
 const ProductionSchema = new mongoose.Schema({
     title : {
@@ -50,9 +50,9 @@ const ProductionSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'setting'
     },
-    log: {
-        type: [String],
-        required: true
+    createdAt: {
+        date: String,
+        user: String
     },
     isArchived: {
         type: Boolean,
@@ -60,6 +60,6 @@ const ProductionSchema = new mongoose.Schema({
     }
 })
 
-ProductionSchema.plugin(mongooseHistory);
+ProductionSchema.plugin(mongooseHistory.plugin);
 
 module.exports = Production = mongoose.model('Production',ProductionSchema)

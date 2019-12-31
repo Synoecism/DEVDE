@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Production = require('../models/Production')
 const User = require('../models/User')
-const diffHistory = require('mongoose-diff-history/diffHistory');
  
 // Route: Post
 // Description: Create production
@@ -27,7 +26,10 @@ router.post('/',async (req,res)=>{
             //if user doesnt exist in app_db, create an admin user 
             user = new User({
                 okta_id: req.user.uid,
-                log : [`CREATED: @ ${new Date().toISOString()} by ${req.user.email}`]
+                createdAt : {
+                    date : new Date(),
+                    user : `${req.user.email}`
+                }
             })
 
             // save user to database
@@ -41,7 +43,13 @@ router.post('/',async (req,res)=>{
             end_date: end_date,
 
             //add current user to the array of admins
-            users: {admins:[user]}
+            users: {admins:[user]},
+
+            //log creation (not provided by mongoose-diff-history)
+            createdAt : {
+                date : new Date(),
+                user : `${req.user.email}`
+            }
         })
 
         // save production to database
@@ -64,8 +72,14 @@ router.post('/',async (req,res)=>{
 router.put('/:id',async(req,res)=>{
     
     try {
-            //find the document by id, inserts changes by req.body and returns the newly updated document from the db
-        let production = await Production.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        //find the document by id, inserts changes by req.body and returns the newly updated document from the db
+        let production = await Production.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new:true,
+            __user: req.user.email,
+            __reason: req.body.reason
+        });
 
         if(!production){
             //if production doesn't exists, return
@@ -80,7 +94,7 @@ router.put('/:id',async(req,res)=>{
 })
 
 // Route: Get
-// Description: Get all productions
+// Description: Get all active productions (isArchived == false)
 // Access: Private
 
 router.get('/',async(req,res)=>{
@@ -88,8 +102,8 @@ router.get('/',async(req,res)=>{
         //fetch the user from the database using the okta auth uid
         const user = await User.findOne({okta_id:req.user.uid})
 
-        //find productions that the user have access to by mongoose id
-        const productions = await Production.find({$or:[{'users.admins':[user]},{'users.accounting':[user]},{'users.basics':[user]}]})
+        //find productions that the user have access to by mongoose id and that is not archived
+        const productions = await Production.find({isArchived:false,$or:[{'users.admins':[user]},{'users.accounting':[user]},{'users.basics':[user]}]})
         return res.status(200).json(productions)
 
     } catch (error) {
