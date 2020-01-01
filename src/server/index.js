@@ -7,7 +7,8 @@ var mongoose = require('mongoose')
 const uri = application_keys.getKeys.connection_string
 
 var productionsController = require('./routes/productions')
-var oktaUsersController = require('./routes/oktausers')
+var usersController = require('./routes/users')
+
 
 //Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
@@ -62,8 +63,8 @@ app.use((req, res, next) => {
 //Setup of production routes
 app.use('/productions',productionsController)
 
-//Setup of oktausers routes
-app.use('/oktausers',oktaUsersController)
+//Setup of user routes
+app.use('/users',usersController)
 
 //Setup of server error handler
 app.use(function(err, req, res, next){

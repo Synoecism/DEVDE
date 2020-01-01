@@ -37,8 +37,14 @@ export default {
     getProduction(id){
         return this.execute('get',`/productions/${id}`)
     },
-    getOktaUsers(){
-        return this.execute('get','/oktausers')
+    getAllUsers(){
+        return this.execute('get','/users')
+    },
+    getCurrentUser(){
+        return this.execute('get','/users/me')
+    },
+    updateUserLevel(id,payload){
+        return this.execute('put',`/productions/users/${id}`,payload)
     },
     //change later
     sendMail(subject,text){

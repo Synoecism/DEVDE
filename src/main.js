@@ -26,14 +26,12 @@ extend(
   }
 );
 
-
-
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
-
 //User are not handled in store considering using Okta (use Vue.$prototype.auth.getUser() instead)
+import api from "./services/api.js";
 
 const store = new Vuex.Store({
   state : {
@@ -45,6 +43,9 @@ const store = new Vuex.Store({
     },
     resetStore(state){
       state.production = ''
+    },
+    async refreshProduction(state,id){
+      state.production = await api.getProduction(id)
     }
   },
   getters : {
