@@ -23,10 +23,6 @@ const ReservationSchema = new mongoose.Schema({
       hotel : Boolean,
       accounting : Boolean
   },
-  log: {
-    type: [String],
-    required: true
-  },
   isArchived: {
     type: Boolean,
     default: false

@@ -8,6 +8,7 @@ const uri = application_keys.getKeys.connection_string
 
 var productionsController = require('./routes/productions')
 var usersController = require('./routes/users')
+var reservationsController = require('./routes/reservations')
 
 //Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
@@ -46,7 +47,7 @@ connect();
 //Connection handling
 var db = mongoose.connection;
 db.on('error', function(){
-  //triggered when an error 
+  //triggered when an error is found
   console.error.bind(console,`- Status: Failed to connected to MongoDB! @ ${new Date().toString()}`)
 
   //reconnect
@@ -54,14 +55,13 @@ db.on('error', function(){
 })
 db.once('open', function(){
   //triggerd when connection is open (final state)
-    console.log(`- Status: Successfully connected to MongoDB! @ ${new Date().toString()}`)
+    console.log(`- Status: Successfully opened connection to MongoDB! @ ${new Date().toString()}`)
 })
 db.on('connecting', function() {
-  //triggered when connected to wi-fi but there is no internet access
-  console.log(`- Status: Connecting to MongoDB! @ ${new Date().toString()}`);
+  console.log(`- Status: Connecting to MongoDB... @ ${new Date().toString()}`);
 });
 db.on('connected', function() {
-  console.log(`- Status: MongoDB connected! @ ${new Date().toString()}`);
+  console.log(`- Status: Succesfully connected to MongoDB! @ ${new Date().toString()}`);
 });
 db.on('reconnected', function () {
   console.log(`- Status: MongoDB reconnected! @ ${new Date().toString()}`);
@@ -97,6 +97,9 @@ app.use('/productions',productionsController)
 //Setup of user routes
 app.use('/users',usersController)
 
+//Setup of reservations routes
+app.use('/reservations',reservationsController)
+
 //Setup of server error handler
 app.use(function(err, req, res, next){
     console.log(err.stack)
@@ -111,5 +114,5 @@ app.use(function(err, req, res, next){
 app.listen(application_keys.getKeys.port, function(err){
     if (err) throw err;
     console.log(`Server running at:`)
-    console.log(`- Backend: http://localhost:${application_keys.getKeys.port}`)
+    console.log(`- Local: http://localhost:${application_keys.getKeys.port}`)
 })

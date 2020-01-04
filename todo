@@ -1,5 +1,5 @@
 [x] connect to mongodb
-[] connect to okta to received all users
+[x] connect to okta to received all users
 [x] setup of mongodb database
 [] pdf creator
 [] mail handling
@@ -15,7 +15,7 @@
 [] handle errors such as loosing connection to internet for client (toasts)
 [] conditionally affect application depeneding on user type
 [] handle errors on server side when not connected/lost connection to internet
-[] handle two levels of users at okta, okta_admin (those who can create productions), okta_user (everyone else)
+[x] handle two levels of users at okta, okta_admin (those who can create productions), okta_user (everyone else)
 [] establish full storage backup of database (where every document is kept forever)
 [] add validation on client side, cannot add production that has a end_date < start_date
 [] checjk possibility for when a change is made to the database, automatically refresh for all users? 
@@ -23,3 +23,6 @@
 [x] update mongoose history plugin with data for which user that has performed the changes (https://www.npmjs.com/package/mongoose-history)
 [x] add object_id to mongoose history plugin 
 [] fix ci
+[] rollback database to certain point in time - fix automatic serverless running backup
+[] 404 custom site - when not found
+[] redirect upon not logged in -> to devde home page
