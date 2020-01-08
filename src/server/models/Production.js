@@ -19,16 +19,16 @@ const ProductionSchema = new mongoose.Schema({
     accounting: [String],
     coordinators: [String]
   },
-  holds: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "hold"
-    }
-  ],
   reservations: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "reservation"
+    }
+  ],
+  groups: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "group"
     }
   ],
   settings: {

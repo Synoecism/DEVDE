@@ -1,28 +1,26 @@
 const mongoose = require("mongoose");
 
 const ReservationSchema = new mongoose.Schema({
-  group_name: {
+  hotel_name: {
     type: String,
     required: true
   },
-  occupancy: [{
+  email_address: {
+    type: String,
+    required: true
+  },
+  rooms: [
+    {
       room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "room"
       },
-      check_in_date : Date,
-      check_out_date : Date,
-      occupants : [String],
-      cost_center : String,
-      confirmation_number : String,
-      discount : Number,
-      comment : String
-  }],
-  status : {
-      group : Boolean,
-      hotel : Boolean,
-      accounting : Boolean
-  },
+      availability : [{
+          date: Date,
+          number: Number
+      }]
+    }
+  ],
   isArchived: {
     type: Boolean,
     default: false

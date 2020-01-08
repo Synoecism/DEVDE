@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Production = require("../models/Production");
-const Reservation = require("../models/Reservation");
+const Reservation = require("../models/Group");
 
 // Route: Post
 // Description: Create reservation
