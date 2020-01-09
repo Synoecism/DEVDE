@@ -57,8 +57,7 @@ router.post("/", async (req, res) => {
 router.put("/users/:id", async (req, res) => {
   try {
 
-    //should seriously be improved to guarantee atomicity
-
+    //first find the production and remove the user from any user array
     let production = await Production.findByIdAndUpdate(
       req.params.id,
       {
@@ -71,24 +70,22 @@ router.put("/users/:id", async (req, res) => {
       {
         new: true
       }
-    );
+    )
+      .then(async(doc) => {
 
-    production = await Production.findByIdAndUpdate(
-      req.params.id,
-      {
-        $push: {
-          [`users.${req.body.user_level}`]: req.body.user_id
-        }
-      },
-      {
-        new: true
-      }
-    );
+        //add the user to the new user_level array
+        let array = req.body.user_level
+        doc.users[array] = req.body.user_id;
+        await doc.save();
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
 
-    return res.status(200).json({status: true,payload: production});
+    return res.status(200).json({ status: true, payload: production });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send({status: false,message: "Server Error"});
+    res.status(500).send({ status: false, message: "Server Error" });
   }
 });
 
