@@ -8,7 +8,7 @@ const uri = application_keys.getKeys.connection_string;
 
 var productionsController = require("./routes/productions");
 var usersController = require("./routes/users");
-var reservationsController = require("./routes/reservations");
+var groupsController = require("./routes/groups");
 
 //Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
@@ -105,7 +105,7 @@ app.use("/productions", productionsController);
 app.use("/users", usersController);
 
 //Setup of reservations routes
-app.use("/reservations", reservationsController);
+app.use("/groups", groupsController);
 
 //Setup of server error handler
 app.use(function(err, req, res, next) {

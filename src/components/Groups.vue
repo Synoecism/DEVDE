@@ -5,12 +5,7 @@
      @ hide-footer: removes default ok/cancel buttons of modal
      @ no-close-on-backdrop: disables ability to hiding the modal upon clicking the backdorp
     --->
-    <b-modal
-      ref="add"
-      hide-footer
-      no-close-on-backdrop
-      title="Add new group"
-    >
+    <b-modal ref="add" hide-footer no-close-on-backdrop title="Add new group">
       <!--- Form in modal --->
       <ValidationObserver v-slot="{ invalid }">
         <b-form @submit.prevent="onSubmit('add')">
@@ -23,42 +18,11 @@
               <b-form-input
                 id="input-1"
                 name="name_input"
-                v-model="formResult.name"
+                v-model="formResult.group_name"
                 placeholder="Enter name of group"
               ></b-form-input>
               <span>{{ errors[0] }}</span>
             </ValidationProvider>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-2"
-            label="Start date:"
-            label-for="input-2"
-          >
-            <validation-provider rules="required" v-slot="{ errors }">
-              <b-form-input
-                id="input-2"
-                name="start_date_input"
-                v-model="formResult.start_date"
-                type="date"
-              ></b-form-input>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-3"
-            label="End date:"
-            label-for="input-3"
-          >
-            <validation-provider rules="required" v-slot="{ errors }">
-              <b-form-input
-                id="input-3"
-                v-model="formResult.end_date"
-                type="date"
-              ></b-form-input>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
           </b-form-group>
 
           <b-button type="submit" :disabled="invalid" variant="primary"
@@ -78,7 +42,7 @@
       ref="edit"
       hide-footer
       no-close-on-backdrop
-      v-bind:title="`Change reservation:`"
+      v-bind:title="`Change group: ${selected.name}`"
     >
       <!--- Form in modal 
        @ <ValidationObserver v-slot="{ pristine }"> : used to be able to guarantee input in the form (ie. submit button inactived if there are no values in the form)
@@ -99,37 +63,6 @@
               ></b-form-input>
               <span>{{ errors[0] }}</span>
             </ValidationProvider>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-2"
-            label="Change start date:"
-            label-for="input-2"
-          >
-            <validation-provider v-slot="{ errors }">
-              <b-form-input
-                id="input-2"
-                name="start_date_input"
-                v-model="formResult.start_date"
-                type="date"
-              ></b-form-input>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-3"
-            label="Change end date:"
-            label-for="input-3"
-          >
-            <validation-provider v-slot="{ errors }">
-              <b-form-input
-                id="input-3"
-                v-model="formResult.end_date"
-                type="date"
-              ></b-form-input>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
           </b-form-group>
 
           <b-form-group
@@ -180,11 +113,21 @@
 
     <!-- Table start -->
     <b-table :striped="true" :fields="fields" :filter="filter" :items="items">
+
+      <!-- Button per each row. cell(column_header) -->
+      <template v-slot:cell(bookings)="row">
+        <b-button
+          variant="primary"
+          v-on:click="selectGroup(row.index), goToBooking()"
+          >Change</b-button
+        >
+      </template>
+
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(artist_document)="row">
         <b-button
-          variant="primary"
-          v-on:click="selectReservation(row.index), createDocument('artist')"
+          variant="success"
+          v-on:click="selectGroup(row.index), createDocument('artist')"
           >Download</b-button
         >
       </template>
@@ -192,8 +135,8 @@
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(hotel_document)="row">
         <b-button
-          variant="primary"
-          v-on:click="selectReservation(row.index), createDocument('hotel')"
+          variant="success"
+          v-on:click="selectGroup(row.index), createDocument('hotel')"
           >Download</b-button
         >
       </template>
@@ -201,10 +144,8 @@
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(accounting_document)="row">
         <b-button
-          variant="primary"
-          v-on:click="
-            selectReservation(row.index), createDocument('accounting')
-          "
+          variant="success"
+          v-on:click="selectGroup(row.index), createDocument('accounting')"
           >Download</b-button
         >
       </template>
@@ -212,17 +153,8 @@
       <!-- Button per each row. cell(column_header) -->
       <template v-slot:cell(edit)="row">
         <b-button
-          variant="primary"
-          v-on:click="selectReservation(row.index), showModal('edit')"
-          >Edit</b-button
-        >
-      </template>
-
-      <!-- Button per each row. cell(column_header) -->
-      <template v-slot:cell(edit)="row">
-        <b-button
           variant="warning"
-          v-on:click="selectReservation(row.index), showModal('edit')"
+          v-on:click="selectGroup(row.index), showModal('edit')"
           >Edit</b-button
         >
       </template>
@@ -231,7 +163,7 @@
       <template v-slot:cell(remove)="row">
         <b-button
           variant="danger"
-          v-on:click="selectReservation(row.index), showConfirmModal()"
+          v-on:click="selectGroup(row.index), showConfirmModal()"
           >Remove</b-button
         >
       </template>
@@ -246,11 +178,15 @@ export default {
   data() {
     return {
       items: [],
+      currentProduction : {},
       fields: [
         {
-          key: "name",
+          key: "group_name",
           label: "Artists",
           sortable: true
+        },
+        {
+          key: "bookings"
         },
         {
           key: "artist_document",
@@ -280,23 +216,41 @@ export default {
     };
   },
   async created() {
-    this.refreshReservations();
+    this.refreshGroups();
   },
   methods: {
-    async refreshReservations() {
-      var production = await this.$store.state.production;
-      this.items = await api.getReservations(production._id);
+    async refreshGroups() {
+      //gets current production from store and then gets all groups of the production
+      this.currentProduction = await this.$store.state.production;
+      this.items = await api.getGroups(this.currentProduction._id);
     },
-    async selectReservation(index) {
+    async selectGroup(index) {
       this.selected = this.items[index];
     },
-    async addReservation() {
+    async addGroup() {
+      //api call to create group
+      var response = await api.addGroup(this.currentProduction._id,this.formResult);
+
+      //notifying user whether or not production was created
+      if (response.status === false) {
+        this.makeToast("danger", "Error", "There was an error!");
+      } else {
+        this.makeToast("success", "Success!", "Succesfully added group");
+
+        //update list of groups to match db
+        this.refreshGroups();
+      }
+
+      //Reset & clean form result and selected production before next event
+      this.resetForm();
+    },
+    async editGroup() {
       window.alert("NOT IMPLEMENTED");
     },
-    async editReservation() {
+    async removeGroup() {
       window.alert("NOT IMPLEMENTED");
     },
-    async removeReservation() {
+    async goToBooking() {
       window.alert("NOT IMPLEMENTED");
     },
     showModal(modal) {
@@ -305,26 +259,37 @@ export default {
     hideModal(modal) {
       this.$refs[modal].hide();
     },
+    makeToast(variant = null, title, content) {
+      this.$bvToast.toast(content, {
+        title: title,
+        variant: variant,
+        solid: true
+      });
+    },
     createDocument(value) {
       window.alert("NOT IMPLEMENTED" + value);
     },
     onSubmit(modal) {
       if (modal === "add") {
-        this.addReservation();
+        this.addGroup();
       }
       if (modal === "edit") {
-        this.editReservation();
+        this.editGroup();
       }
 
       //Hide modal
       this.hideModal(modal);
+    },
+    resetForm() {
+      this.formResult = {};
+      this.selected = {};
     },
     showConfirmModal() {
       //reset box
       this.box = "";
       this.$bvModal
         .msgBoxConfirm(
-          "Are you sure you would like to remove the production: " +
+          "Are you sure you would like to remove the group: " +
             this.selected.name,
           {
             title: "Please confirm",
@@ -337,7 +302,7 @@ export default {
         )
         .then(value => {
           if (value) {
-            this.removeReservation();
+            this.removeGroup();
           }
         });
     }

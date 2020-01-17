@@ -46,5 +46,4 @@ const ProductionSchema = new mongoose.Schema({
 });
 
 ProductionSchema.plugin(mongooseHistory.plugin);
-
 module.exports = Production = mongoose.model("Production", ProductionSchema);

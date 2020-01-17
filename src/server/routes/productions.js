@@ -68,7 +68,10 @@ router.put("/users/:id", async (req, res) => {
         }
       },
       {
-        new: true
+        new: true,
+        //creates a history document for this change
+        __user: req.user.email,
+        __reason: req.body.reason
       }
     )
       .then(async(doc) => {
@@ -80,6 +83,13 @@ router.put("/users/:id", async (req, res) => {
       }).catch(function(err) {
         console.log(err);
       });
+
+      if (!production) {
+        //if production doesn't exists, return
+        return res
+          .status(400)
+          .json({ status: false, msg: "Production does not exist" });
+      }
 
     return res.status(200).json({ status: true, payload: production });
   } catch (error) {

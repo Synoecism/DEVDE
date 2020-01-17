@@ -267,7 +267,7 @@ export default {
       await this.$store.commit("changeProduction", this.items[index]);
 
       //route to reservations of the selected production
-      await this.$router.push("/reservations");
+      await this.$router.push("/groups");
     },
     async addProduction() {
       //api call to create production

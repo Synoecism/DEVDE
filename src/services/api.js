@@ -46,23 +46,11 @@ export default {
     updateUserLevel(id,payload){
         return this.execute('put',`/productions/users/${id}`,payload)
     },
-    getReservations(production_id){
-        /*eslint-disable*/
-        console.log(production_id)
-        var response = this.execute('get',`/reservations/${production_id}`)
-        console.log(response)
-        return [
-            {name: 'Solange'},
-            {name: 'Michael Jackson'}
-        ]
+    getGroups(production_id){
+        return this.execute('get',`/groups/${production_id}`)
+
     },
-    createReservation(production_id){
-        return this.execute('post',`/reservations/${production_id}`)
-    },
-    //change later
-    sendMail(subject,text){
-        /* eslint-disable */
-        console.log(subject,text)
-        return this.execute('post','/sendMail')
+    addGroup(production_id,payload){
+        return this.execute('post',`/groups/${production_id}`,payload)
     }
 }
