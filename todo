@@ -4,13 +4,13 @@
 [] handle errors such as loosing connection to internet for client (toasts)
 [] conditionally affect application depeneding on user type
 [] handle errors on server side when not connected/lost connection to internet
-[x] handle two levels of users at okta, okta_admin (those who can create productions), okta_user (everyone else)
+[] handle two levels of users at okta, okta_admin (those who can create productions), okta_user (everyone else)
 [] establish full storage backup of database (where every document is kept forever)
 [] add validation on client side, cannot add production that has a end_date < start_date
 [] checjk possibility for when a change is made to the database, automatically refresh for all users? 
 [] add validation on client side, null values should not be allowed as inputs (currently you can enter a value as input, then remove, then push to db)
-[x] update mongoose history plugin with data for which user that has performed the changes (https://www.npmjs.com/package/mongoose-history)
-[x] add object_id to mongoose history plugin 
+[] update mongoose history plugin with data for which user that has performed the changes (https://www.npmjs.com/package/mongoose-history)
+[] add object_id to mongoose history plugin 
 [] fix ci
 [] server log when not connceted to internet
 [] rollback database to certain point in time - fix automatic serverless running backup
