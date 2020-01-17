@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Productions from '@/components/Productions'
 import Reservations from '@/components/Reservations'
-import Holds from '@/components/Holds'
+import Groups from '@/components/Groups'
 import Settings from '@/components/Settings'
 import Auth from '@okta/okta-vue'
 import application_keys from '../application-keys'
@@ -49,9 +49,9 @@ let router = new Router({
         }
     },
     {
-        path: '/holds',
-        name: 'Holds',
-        component: Holds,
+        path: '/groups',
+        name: 'Groups',
+        component: Groups,
         meta: {
           //Needs to be logged in to be accessible
           requiresAuth: true

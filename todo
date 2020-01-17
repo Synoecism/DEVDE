@@ -1,15 +1,4 @@
-[x] connect to mongodb
-[x] connect to okta to received all users
-[x] setup of mongodb database
 [] pdf creator
-[] mail handling
-[x] user types (owner, default, accounting)
-[x] tables for reservation
-[x] tables for productions
-[] tables for users
-[] tables for reservation
-[x] seperate api calls from server index.js
-[x] fix so that there is confirmation that server is up-and-running
 [] fix so that whenever server code changes/isSaved, the server is reloaded like the client 
 [] use spinners to indicate loading on page wherever is needed
 [] handle errors such as loosing connection to internet for client (toasts)
@@ -23,6 +12,8 @@
 [x] update mongoose history plugin with data for which user that has performed the changes (https://www.npmjs.com/package/mongoose-history)
 [x] add object_id to mongoose history plugin 
 [] fix ci
+[] server log when not connceted to internet
 [] rollback database to certain point in time - fix automatic serverless running backup
 [] 404 custom site - when not found
 [] redirect upon not logged in -> to devde home page
+[] fix client side informatio when not conncted to db (Uncaught (in promise) Error: Network Error))

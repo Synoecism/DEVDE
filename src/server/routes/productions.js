@@ -72,13 +72,12 @@ router.put("/users/:id", async (req, res) => {
       }
     )
       .then(async(doc) => {
-
         //add the user to the new user_level array
         let array = req.body.user_level
-        doc.users[array] = req.body.user_id;
+        doc.users[array].push(req.body.user_id);
         await doc.save();
-      })
-      .catch(function(err) {
+        
+      }).catch(function(err) {
         console.log(err);
       });
 

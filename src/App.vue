@@ -7,8 +7,8 @@
         <b-navbar-nav>
           <b-nav-item v-if="activeUser && !activeProduction" to="/productions">Productions</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" >{{activeProduction.title}}</b-nav-item>
+          <b-nav-item v-if="activeUser && activeProduction" to="/groups">Groups</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" to="/reservations">Reservations</b-nav-item>
-          <b-nav-item v-if="activeUser && activeProduction" to="/holds">Holds</b-nav-item>
           <b-nav-item v-if="activeUser && activeProduction" to="/settings">Settings</b-nav-item>
           <b-nav-item href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
           <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
