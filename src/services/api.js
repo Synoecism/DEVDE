@@ -48,9 +48,49 @@ export default {
     },
     getGroups(production_id){
         return this.execute('get',`/groups/${production_id}`)
-
     },
     addGroup(production_id,payload){
         return this.execute('post',`/groups/${production_id}`,payload)
+    },
+    getReservations(production_id){
+        //return this.execute('get',`/reservations/${production_id}`)
+
+        /*eslint-disable*/
+        console.log(production_id)
+
+        return [
+            {
+                hotel_name : "Elite Plaza",
+                rooms : [
+                    {
+                        room : {
+                            room_name : "Double"
+                        },
+                        availability : [
+                            {
+                            date : Date.now,
+                            number : 5
+                            }
+                        ]
+                    },
+                    {
+                        room : {
+                            room_name : "Single"
+                        },
+                        availability : [
+                            {
+                            date : Date.now,
+                            number : 5
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    addReservation(production_id){
+        /*eslint-disable*/
+        console.log('adding reservation to production: '+production_id)
+        return {status: true}
     }
 }

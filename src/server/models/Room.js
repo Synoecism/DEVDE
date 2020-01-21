@@ -27,10 +27,6 @@ const RoomSchema = new mongoose.Schema({
     cost: Number,
     price: Number
   },
-  log: {
-    type: [String],
-    required: true
-  },
   isArchived: {
     type: Boolean,
     default: false
