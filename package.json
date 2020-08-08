@@ -4,9 +4,8 @@
   "description": "Reservation system for events",
   "main": "./src/main.js",
   "scripts": {
-    "server": "node src/server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "vue-cli-service serve"
+    "server": "cd server && npm install && clear && node index.js",
+    "client": "npm install && vue-cli-service serve"
   },
   "dependencies": {
     "@okta/jwt-verifier": "^1.0.0",

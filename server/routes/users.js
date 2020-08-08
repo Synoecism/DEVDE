@@ -1,9 +1,8 @@
 var request = require("request");
 const express = require("express");
 const router = express.Router();
-const application_keys = require("../../application-keys");
-const okta_domain = application_keys.getKeys.okta_domain;
-const okta_authorization = application_keys.getKeys.okta_authorization;
+const okta_domain_url = process.env.OKTA_DOMAIN_URL;
+const okta_api_token = process.env.OKTA_API_TOKEN;
 
 // Route: Get
 // Description: Get all okta users
@@ -13,11 +12,11 @@ router.get("/", async (req, res) => {
   try {
     var options = {
       method: "GET",
-      url: `${okta_domain}/api/v1/users?limit=25`,
+      url: `${okta_domain_url}/api/v1/users?limit=25`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `${okta_authorization}`
+        Authorization: `${okta_api_token}`
       }
     };
     request(options, function(error, response) {
@@ -40,11 +39,11 @@ router.get("/me", async (req, res) => {
   try {
     var options = {
       method: "GET",
-      url: `${okta_domain}/api/v1/users/me`,
+      url: `${okta_domain_url}/api/v1/users/me`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `${okta_authorization}`
+        Authorization: `${okta_api_token}`
       }
     };
     request(options, function(error, response) {

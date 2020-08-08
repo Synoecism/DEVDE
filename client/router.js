@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Productions from '@/components/Productions'
-import Reservations from '@/components/Reservations'
-import Groups from '@/components/Groups'
-import Settings from '@/components/Settings'
+import Home from './views/Home'
+import Productions from './views/Productions'
+import Reservations from './views/Reservations'
+import Groups from './views/Groups'
+import Settings from './views/Settings'
 import Auth from '@okta/okta-vue'
-import application_keys from '../application-keys'
+// get keys
+var keys = require("./keys.js");
+var OKTA_DOMAIN_ULR = keys.OKTA_DOMAIN_URL();
+var OKTA_CLIENT_ID = keys.OKTA_CLIENT_ID();
 
 Vue.use(Auth, {
-  issuer: `${application_keys.getKeys.okta_domain}/oauth2/default`,
-  client_id: application_keys.getKeys.client_id,
+  issuer: `${OKTA_DOMAIN_ULR}/oauth2/default`,
+  client_id: OKTA_CLIENT_ID,
   redirect_uri: 'http://localhost:8080/implicit/callback',
   scope: 'openid profile email'
 })
