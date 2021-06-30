@@ -1,7 +1,5 @@
 <template>
-  <div class="container-fluid mt-4">
-    <h1 class="h1">Productions</h1>
-
+  <b-container class="bv-example-row">
     <!-- Modal
      @ hide-footer: removes default ok/cancel buttons of modal
      @ no-close-on-backdrop: disables ability to hiding the modal upon clicking the backdorp
@@ -10,22 +8,24 @@
       ref="add"
       hide-footer
       no-close-on-backdrop
-      title="Add new production"
+      v-bind:title="`Add production`"
     >
-      <!--- Form in modal --->
-      <ValidationObserver v-slot="{ invalid }">
+      <!--- Form in modal 
+       @ <ValidationObserver v-slot="{ pristine }"> : used to be able to guarantee input in the form (ie. submit button inactived if there are no values in the form)
+      --->
+      <ValidationObserver v-slot="{ pristine }">
         <b-form @submit.prevent="onSubmit('add')">
           <b-form-group
             id="input-group-1"
             label="Title of production:"
             label-for="input-1"
           >
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider v-slot="{ errors }">
               <b-form-input
                 id="input-1"
                 name="title_input"
                 v-model="formResult.title"
-                placeholder="Enter title of production"
+                placeholder="Set title of production"
               ></b-form-input>
               <span>{{ errors[0] }}</span>
             </ValidationProvider>
@@ -33,10 +33,10 @@
 
           <b-form-group
             id="input-group-2"
-            label="Start date:"
+            label="Set start date:"
             label-for="input-2"
           >
-            <validation-provider rules="required" v-slot="{ errors }">
+            <validation-provider v-slot="{ errors }">
               <b-form-input
                 id="input-2"
                 name="start_date_input"
@@ -49,10 +49,10 @@
 
           <b-form-group
             id="input-group-3"
-            label="End date:"
+            label="Set end date:"
             label-for="input-3"
           >
-            <validation-provider rules="required" v-slot="{ errors }">
+            <validation-provider v-slot="{ errors }">
               <b-form-input
                 id="input-3"
                 v-model="formResult.end_date"
@@ -62,8 +62,8 @@
             </validation-provider>
           </b-form-group>
 
-          <b-button type="submit" :disabled="invalid" variant="primary"
-            >Submit</b-button
+          <b-button type="submit" :disabled="pristine" variant="primary"
+            >Add</b-button
           >
         </b-form>
       </ValidationObserver>
@@ -158,26 +158,30 @@
     </b-modal>
     <!--- End of modal --->
 
-    <!-- Button to add new production -->
-    <b-button variant="primary" v-on:click="showModal('add')"
-      >Add new production</b-button
-    >
+    <b-row class="mb-3">
+      <b-col class="h1">Productions</b-col>
+    </b-row>
 
-    <!--- Filtering for the table --->
-    <b-col lg="6" class="my-1">
-      <b-input-group size="sm">
-        <b-form-input
-          v-model="filter"
-          type="search"
-          id="filterInput"
-          placeholder="Type to Search"
-        ></b-form-input>
-        <b-input-group-append>
-          <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-col>
-    <!--- End of the filtering --->
+    <b-row class="mb-3">
+      <b-col cols="9">
+        <!-- Button to add new production -->
+        <b-button variant="primary" v-on:click="showModal('add')"
+          >Add new production</b-button
+        >
+      </b-col>
+      <b-col md="3">
+        <!--- Filtering for the table --->
+        <b-input-group size="sm">
+          <b-form-input
+            v-model="filter"
+            type="search"
+            id="filterInput"
+            placeholder="Type to Search"
+          ></b-form-input>
+        </b-input-group>
+        <!--- End of the filtering --->
+      </b-col>
+    </b-row>
 
     <!-- Table start -->
     <b-table :striped="true" :fields="fields" :filter="filter" :items="items">
@@ -217,7 +221,7 @@
       </template>
     </b-table>
     <!-- Table ending -->
-  </div>
+  </b-container>
 </template>
 <script>
 import api from "../services/api.js";
@@ -229,30 +233,30 @@ export default {
       items: [],
       fields: [
         {
-          key: 'select'
+          key: "select",
         },
         {
-          key: 'title',
-          sortable: true
+          key: "title",
+          sortable: true,
         },
         {
-          key: 'start_date',
-          sortable: true
+          key: "start_date",
+          sortable: true,
         },
         {
-          key: 'end_date',
-          sortable: true
+          key: "end_date",
+          sortable: true,
         },
         {
-          key: 'edit',
+          key: "edit",
         },
         {
-          key: 'archive'
-        }
+          key: "archive",
+        },
       ],
       filter: null,
       selected: {},
-      box: ""
+      box: "",
     };
   },
   created() {
@@ -347,7 +351,7 @@ export default {
       this.$bvToast.toast(content, {
         title: title,
         variant: variant,
-        solid: true
+        solid: true,
       });
     },
     onSubmit(modal) {
@@ -373,15 +377,15 @@ export default {
             okVariant: "danger",
             okTitle: "YES",
             cancelTitle: "NO",
-            centered: true
+            centered: true,
           }
         )
-        .then(value => {
+        .then((value) => {
           if (value) {
             this.archiveProduction();
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>

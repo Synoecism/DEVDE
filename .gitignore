@@ -3,8 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-#Ignore keys file
+# ignore keys file
 keys.js
+
+# ignore todo
+todo.txt
 
 # Environments
 .env

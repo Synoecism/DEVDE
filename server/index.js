@@ -18,16 +18,22 @@ var usersController = require("./routes/users");
 var groupsController = require("./routes/groups");
 
 //Get keys
-const username = process.env.MONGODB_ATLAS_USERNAME;
-const password = process.env.MONGODB_ATLAS_PASSWORD;
-const database = process.env.MONGODB_ATLAS_DATABASE_NAME;
+const keys = require("../keys")
+const domainurl = keys.OKTA_DOMAIN_URL;
+const clientid = keys.OKTA_CLIENT_ID;
+
+const username = keys.MONGODB_ATLAS_USERNAME;
+const password = keys.MONGODB_ATLAS_PASSWORD;
+const database = keys.MONGODB_ATLAS_DATABASE_NAME;
+
+const serverport = keys.SERVER_PORT;
 
 const uri = `mongodb+srv://${username}:${password}@devde-01-vglve.mongodb.net/${database}?retryWrites=true&w=majority`;
 
 //Setup of Okta JWTVerifier
 oktaJwtVerifier = new oktaJwtVerifier({
-  issuer: `${process.env.OKTA_DOMAIN_URL}/oauth2/default`,
-  client_id: process.env.OKTA_CLIENT_ID
+  issuer: `https://${domainurl}/oauth2/default`,
+  client_id: clientid
 });
 
 /* Connect to MongoDB Atlas Cloud Server
@@ -119,10 +125,10 @@ app.use(function(err, req, res, next) {
 });
 
 //Setup of backend server
-app.listen(process.env.SERVER_PORT, function(err) {
+app.listen(serverport, function(err) {
   if (err) throw err;
   console.log(`DEVDE Backend-server`);
   console.log(``);
-  console.log(`Express server listening on port ${process.env.SERVER_PORT}.`);
-  console.log(`Backend: http://localhost:${process.env.SERVER_PORT}`);
+  console.log(`Express server listening on port ${serverport}.`);
+  console.log(`Backend: http://localhost:${serverport}`);
 });
